@@ -20,11 +20,11 @@
         </div>
         <div class="brand-text">
           <h1>SOFT IT FB VIDEO DOWNLOADER</h1>
-          <span class="version-tag">HD &bull; Full HD &bull; SD</span>
+          <span class="version-tag">Videos &bull; Photos (HD)</span>
         </div>
       </div>
       <div class="header-actions">
-        <button id="refreshBtn" class="icon-btn" title="Rescan Videos">
+        <button id="refreshBtn" class="icon-btn" title="Rescan Videos & Photos">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M23 4v6h-6"></path>
             <path d="M1 20v-6h6"></path>
@@ -43,11 +43,11 @@
     <!-- Collapsible Settings Panel -->
     <div id="settingsPanel" class="settings-panel hidden">
       <div class="setting-item">
-        <label for="toggleOverlay">Show Floating Download button on video players</label>
+        <label for="toggleOverlay">Show Floating Download button on Facebook</label>
         <input type="checkbox" id="toggleOverlay" checked>
       </div>
       <div class="setting-item">
-        <label for="selectDefaultQuality">Default preferred quality</label>
+        <label for="selectDefaultQuality">Default preferred quality for videos</label>
         <select id="selectDefaultQuality">
           <option value="HD">Highest Available (HD / 1080p)</option>
           <option value="SD">Standard Definition (SD)</option>
@@ -55,7 +55,25 @@
       </div>
     </div>
 
-    <!-- Active Status Bar -->
+    <!-- Media Tabs Navigation -->
+    <div class="tabs-nav">
+      <button id="tabVideosBtn" class="tab-btn active" data-tab="videos">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+        <span>Videos (<span id="videoCountBadge">0</span>)</span>
+      </button>
+      <button id="tabImagesBtn" class="tab-btn" data-tab="images">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+          <circle cx="8.5" cy="8.5" r="1.5"></circle>
+          <polyline points="21 15 16 10 5 21"></polyline>
+        </svg>
+        <span>Photos (<span id="imageCountBadge">0</span>)</span>
+      </button>
+    </div>
+
+    <!-- Status Bar -->
     <div class="status-bar">
       <span id="detectedCountText">Scanning page...</span>
       <span id="pageContextBadge" class="context-badge">Facebook</span>
@@ -73,13 +91,13 @@
           </svg>
         </div>
         <h3>Facebook Tab Required</h3>
-        <p>Please open Facebook to detect videos from Pages, profiles, Reels, and groups.</p>
+        <p>Please open Facebook to detect videos and photos from Pages, profiles, Reels, and groups.</p>
         <button id="openFbBtn" class="primary-action-btn">
           Open Facebook
         </button>
       </div>
 
-      <!-- Zero Videos Detected State -->
+      <!-- Zero Media Detected State -->
       <div id="emptyState" class="state-container hidden">
         <div class="state-icon pulse">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -93,12 +111,12 @@
             <line x1="17" y1="7" x2="22" y2="7"></line>
           </svg>
         </div>
-        <h3>No Video Playing Yet</h3>
-        <p>Scroll down or click <strong>Play</strong> on any video on your screen to capture the HD download link.</p>
+        <h3 id="emptyTitle">No Media Detected Yet</h3>
+        <p id="emptyDesc">Scroll down your Facebook feed or click on a video or photo to capture high-resolution downloads.</p>
         <div class="tips-box">
           <div class="tip-row">
             <span class="tip-bullet">&bull;</span>
-            <span>Supports Pages, Profiles, Reels &amp; Groups</span>
+            <span>Supports Videos &amp; Photos in High Definition</span>
           </div>
           <div class="tip-row">
             <span class="tip-bullet">&bull;</span>
@@ -114,6 +132,11 @@
       <div id="videoList" class="video-list">
         <!-- Rendered dynamically -->
       </div>
+
+      <!-- Image Grid List -->
+      <div id="imageList" class="image-grid hidden">
+        <!-- Rendered dynamically -->
+      </div>
     </main>
 
     <!-- Bottom Action Bar -->
@@ -124,7 +147,7 @@
           <polyline points="7 10 12 15 17 10"></polyline>
           <line x1="12" y1="15" x2="12" y2="3"></line>
         </svg>
-        Download All (Highest Quality)
+        <span id="downloadAllText">Download All</span>
       </button>
     </footer>
   </div>

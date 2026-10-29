@@ -1,11 +1,12 @@
 /**
  * SOFT IT FB VIDEO DOWNLOADER - Content Script (Isolated World)
- * Injects floating download button on videos, coordinates detections between
- * in-page script, background webRequest, and the user interface.
+ * Injects floating download button on both videos and photos,
+ * coordinates detections with background webRequest and popup.
  */
 
 (() => {
   const videoCatalog = new Map();
+  const imageCatalog = new Map();
   let showOverlayButtons = true;
   let defaultQuality = 'HD';
 
@@ -38,15 +39,14 @@
         syncVideosWithBackground();
       }
     } else if (event.data.type === 'VIDEO_BATCH_SYNC') {
-      const videos = event.data.videos || [];
-      videos.forEach(v => {
+      (event.data.videos || []).forEach(v => {
         if (v && v.id) videoCatalog.set(v.id, v);
       });
       syncVideosWithBackground();
     }
   });
 
-  // 2. Receive detections from Background (via webRequest)
+  // 2. Receive background events
   chrome.runtime?.onMessage?.addListener((message, sender, sendResponse) => {
     if (message.type === 'BG_VIDEO_DETECTED') {
       const video = message.video;
@@ -57,7 +57,8 @@
     } else if (message.type === 'REFRESH_VIDEOS') {
       requestInPageVideos();
       scanForVideos();
-      sendResponse({ status: 'scanned', count: videoCatalog.size });
+      scanForImages();
+      sendResponse({ status: 'scanned', videos: videoCatalog.size, images: imageCatalog.size });
     }
   });
 
@@ -65,21 +66,32 @@
   function syncVideosWithBackground() {
     clearTimeout(syncTimeout);
     syncTimeout = setTimeout(() => {
-      const list = Array.from(videoCatalog.values());
       chrome.runtime?.sendMessage({
         type: 'REGISTER_VIDEOS',
-        videos: list,
+        videos: Array.from(videoCatalog.values()),
         url: window.location.href,
         pageTitle: document.title
       }).catch(() => {});
     }, 250);
   }
 
+  let imgSyncTimeout = null;
+  function syncImagesWithBackground() {
+    clearTimeout(imgSyncTimeout);
+    imgSyncTimeout = setTimeout(() => {
+      chrome.runtime?.sendMessage({
+        type: 'REGISTER_IMAGES',
+        images: Array.from(imageCatalog.values()),
+        url: window.location.href
+      }).catch(() => {});
+    }, 300);
+  }
+
   function requestInPageVideos() {
     window.postMessage({ type: 'SOFT_IT_REQUEST_VIDEOS' }, '*');
   }
 
-  // 3. DOM Container Discovery
+  // --- 3. VIDEO DISCOVERY & OVERLAY ---
   function findVideoContainer(videoElem) {
     if (!videoElem) return null;
 
@@ -189,12 +201,9 @@
     const listContainer = dropdown.querySelector('.fb-dl-options-list');
     listContainer.innerHTML = '';
 
-    // Request fresh scan
     requestInPageVideos();
 
     let videoData = null;
-
-    // Check if video element has direct http src
     if (videoElem && videoElem.src && videoElem.src.startsWith('http') && !videoElem.src.startsWith('blob:')) {
       videoData = {
         id: 'fb_direct_' + Date.now(),
@@ -252,14 +261,14 @@
 
       item.addEventListener('click', (e) => {
         e.stopPropagation();
-        triggerDownload(opt.url, videoData.title, opt.tag, videoData.id, item);
+        triggerVideoDownload(opt.url, videoData.title, opt.tag, videoData.id, item);
       });
 
       listContainer.appendChild(item);
     });
   }
 
-  function triggerDownload(url, title, quality, videoId, itemElem) {
+  function triggerVideoDownload(url, title, quality, videoId, itemElem) {
     if (itemElem) {
       const btn = itemElem.querySelector('.fb-dl-opt-btn');
       if (btn) {
@@ -305,10 +314,124 @@
     });
   }
 
-  function toggleAllOverlays(visible) {
-    const overlays = document.querySelectorAll('.fb-downloader-overlay-wrapper');
-    overlays.forEach(o => {
-      o.style.display = visible ? 'flex' : 'none';
+  // --- 4. IMAGE DISCOVERY & OVERLAY ---
+  function getBestImageUrl(imgElem) {
+    if (!imgElem) return null;
+
+    // Check srcset for highest resolution
+    if (imgElem.srcset) {
+      const candidates = imgElem.srcset.split(',').map(s => s.trim().split(' '));
+      let bestUrl = null;
+      let maxW = 0;
+      candidates.forEach(([u, w]) => {
+        const widthVal = parseInt(w, 10) || 0;
+        if (widthVal >= maxW) {
+          maxW = widthVal;
+          bestUrl = u;
+        }
+      });
+      if (bestUrl) return bestUrl;
+    }
+
+    return imgElem.currentSrc || imgElem.src;
+  }
+
+  function createImageOverlay(imgElem) {
+    const parent = imgElem.parentElement;
+    if (!parent || parent.querySelector('.fb-photo-dl-btn')) return;
+
+    // Must be a decent sized photo (skip icons, emojis, small avatars)
+    const rect = imgElem.getBoundingClientRect();
+    const width = imgElem.naturalWidth || rect.width;
+    const height = imgElem.naturalHeight || rect.height;
+
+    if (width < 180 || height < 180) return;
+
+    const imgUrl = getBestImageUrl(imgElem);
+    if (!imgUrl || !imgUrl.includes('fbcdn.net')) return;
+
+    // Add to catalog
+    const imgId = 'img_' + Math.abs(hashCode(imgUrl));
+    if (!imageCatalog.has(imgId)) {
+      imageCatalog.set(imgId, {
+        id: imgId,
+        url: imgUrl,
+        title: imgElem.alt || `Facebook Photo ${imgId}`,
+        width,
+        height
+      });
+      syncImagesWithBackground();
+    }
+
+    const pos = window.getComputedStyle(parent).position;
+    if (pos === 'static') {
+      parent.style.position = 'relative';
+    }
+
+    const dlBtn = document.createElement('button');
+    dlBtn.className = 'fb-photo-dl-btn';
+    dlBtn.title = 'Download High-Res Photo';
+    dlBtn.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7 10 12 15 17 10"></polyline>
+        <line x1="12" y1="15" x2="12" y2="3"></line>
+      </svg>
+      <span>Photo</span>
+    `;
+
+    if (!showOverlayButtons) {
+      dlBtn.style.display = 'none';
+    }
+
+    dlBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      dlBtn.innerHTML = `
+        <svg class="fb-dl-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle>
+          <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"></path>
+        </svg>
+      `;
+
+      chrome.runtime?.sendMessage({
+        type: 'DOWNLOAD_IMAGE',
+        url: imgUrl,
+        title: imgElem.alt || 'Facebook_Photo',
+        imageId: imgId
+      }, (res) => {
+        if (res && res.success) {
+          dlBtn.innerHTML = `
+            <svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          `;
+          setTimeout(() => {
+            dlBtn.innerHTML = `
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Photo</span>
+            `;
+          }, 2500);
+        } else {
+          dlBtn.innerHTML = `<span style="color:#ef4444;font-size:10px;">Error</span>`;
+        }
+      });
+    });
+
+    parent.appendChild(dlBtn);
+  }
+
+  function scanForImages() {
+    const images = document.querySelectorAll('img[src*="fbcdn.net"], img[src*="scontent"]');
+    images.forEach(img => {
+      // Exclude tiny icons/emojis
+      if (!img.src.includes('rsrc.php') && !img.src.includes('emoji.php')) {
+        createImageOverlay(img);
+      }
     });
   }
 
@@ -322,12 +445,22 @@
     });
   }
 
+  function toggleAllOverlays(visible) {
+    document.querySelectorAll('.fb-downloader-overlay-wrapper').forEach(o => {
+      o.style.display = visible ? 'flex' : 'none';
+    });
+    document.querySelectorAll('.fb-photo-dl-btn').forEach(b => {
+      b.style.display = visible ? 'inline-flex' : 'none';
+    });
+  }
+
   let scanScheduled = false;
   function scheduleScan() {
     if (scanScheduled) return;
     scanScheduled = true;
     requestAnimationFrame(() => {
       scanForVideos();
+      scanForImages();
       scanScheduled = false;
     });
   }
@@ -341,4 +474,13 @@
   scheduleScan();
   setInterval(scheduleScan, 1500);
   requestInPageVideos();
+
+  function hashCode(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = ((hash << 5) - hash) + str.charCodeAt(i);
+      hash |= 0;
+    }
+    return hash;
+  }
 })();

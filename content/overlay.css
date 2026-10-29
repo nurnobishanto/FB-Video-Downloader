@@ -237,3 +237,39 @@
   font-size: 11px;
   color: #64748b;
 }
+
+/* Photo Download Floating Button */
+.fb-photo-dl-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.85;
+}
+
+.fb-photo-dl-btn:hover {
+  opacity: 1;
+  background: #1877F2;
+  transform: translateY(-1px) scale(1.03);
+  box-shadow: 0 6px 16px rgba(24, 119, 242, 0.4);
+}
+
+.fb-photo-dl-btn svg {
+  width: 13px;
+  height: 13px;
+}

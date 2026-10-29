@@ -1,41 +1,131 @@
-# SOFT IT FB VIDEO DOWNLOADER (Manifest V3)
+# SOFT IT FB VIDEO DOWNLOADER 🚀
+### ফেসবুক ভিডিও (Full HD / HD / SD) ও হাই-রেজোলিউশন ফটো ডাউনলোডার ক্রোম এক্সটেনশন
 
-A high-performance Chrome extension that allows users to smoothly detect and download Facebook videos in **HD (1080p/720p)** and **SD** quality from Pages, personal profiles, Reels, Watch, public groups, and authorized private groups.
-
----
-
-## 🌟 Key Features
-
-- **Official Name**: **SOFT IT FB VIDEO DOWNLOADER**
-- **Multi-Layer Video Detection Engine**:
-  1. **Background WebRequest Interceptor**: Directly captures authenticated progressive MP4 media requests sent to `*.fbcdn.net` and `*.facebook.com` with 100% reliability as soon as a video buffers or plays.
-  2. **In-Page (MAIN World) GraphQL & SSR Parser**: Decodes Facebook's internal JSON scripts and GraphQL responses for `playable_url_quality_hd` (1080p/720p) and `playable_url` (SD).
-  3. **React Fiber DOM Inspection**: Hooks into `<video>` HTML5 elements to read internal React player props directly.
-  4. **Dynamic Feed DOM Observer**: Injects sleek floating download buttons directly on Facebook video cards.
-- **Support for All Video Locations**:
-  - Facebook Pages & User Profiles
-  - Facebook Reels & Watch feeds
-  - Public Facebook Groups
-  - **Authorized Private Groups**: Works seamlessly using your active Facebook session without bypassing any privacy or access controls.
-- **Multiple Quality Options**: Choose between Full HD/HD, SD, or individual stream bitrates before downloading.
-- **Clean Naming Convention**: Saves files as `SOFT_IT_FB_[Title]_[Quality]_[ID].mp4`.
+**SOFT IT FB VIDEO DOWNLOADER** একটি শক্তিশালী এবং আধুনিক ক্রোম এক্সটেনশন (Manifest V3), যা ফেসবুকের পেজ, ব্যক্তিগত প্রোফাইল, রিলস, ওয়াচ, পাবলিক গ্রুপ এবং অনুমোদিত প্রাইভেট গ্রুপ থেকে খুব সহজে এবং দ্রুততম সময়ে **ফুল এইচডি (1080p), এইচডি (720p), এসডি কোয়ালিটির ভিডিও** এবং **অরিজিনাল হাই-রেজোলিউশন ছবি** ডাউনলোড করতে সাহায্য করে।
 
 ---
 
-## 🚀 How to Reload or Install in Chrome
+## 📌 সূচিপত্র (Table of Contents)
+1. [বৈশিষ্ট্যসমূহ (Features)](#-বৈশিষ্ট্যসমূহ-features)
+2. [ধাপ ১: GitHub থেকে কীভাবে ডাউনলোড করবেন](#-ধাপ-১-github-থেকে-কীভাবে-ডাউনলোড-করবেন)
+3. [ধাপ ২: Google Chrome-এ কীভাবে এক্সটেনশনটি যোগ (Add) করবেন](#-ধাপ-২-google-chrome-এ-কীভাবে-যোগ-add-করবেন)
+4. [ধাপ ৩: ফেসবুক ভিডিও ডাউনলোড করার নিয়ম](#-ধাপ-৩-ফেসবুক-ভিডিও-ডাউনলোড-করার-নিয়ম)
+5. [ধাপ ৪: ফেসবুক ফটো/ছবি ডাউনলোড করার নিয়ম](#-ধাপ-৪-ফেসবুক-ফটোছবি-ডাউনলোড-করার-নিয়ম)
+6. [ধাপ ৫: এক ক্লিকে সব ডাউনলোড (Download All)](#-ধাপ-৫-এক-ক্লিকে-সব-ডাউনলোড-download-all)
+7. [🔒 প্রাইভেট গ্রুপ ভিডিও ডাউনলোড ও নিরাপত্তা](#-প্রাইভেট-গ্রুপ-ভিডিও-ডাউনলোড-ও-নিরাপত্তা)
+8. [❓ সাধারণ সমস্যা ও সমাধান (FAQ / Troubleshooting)](#-সাধারণ-সমস্যা-ও-সমাধান-faq--troubleshooting)
+9. [English Guide Summary](#-english-guide-summary)
 
-1. Open Google Chrome and navigate to:
+---
+
+## ✨ বৈশিষ্ট্যসমূহ (Features)
+
+- **মাল্টি-কোয়ালিটি ভিডিও ডাউনলোড**: সর্বোচ্চ এভেইলেবল রেজোলিউশন যেমন **Full HD (1080p)**, **HD (720p)** এবং **SD (480p/360p)** বেছে নেওয়ার সুবিধা।
+- **হাই-রেজোলিউশন ফটো ডাউনলোড**: পোস্টের সিঙ্গেল বা মাল্টিপল ফটো অরিজিনাল কোয়ালিটিতে ডাউনলোড।
+- **অন-স্ক্রিন ফ্লোটিং বাটন**: ভিডিও ও ছবির ওপর অটোমেটিক **Download** বাটন ভেসে ওঠে।
+- **আধুনিক ও দৃষ্টিনন্দন পপআপ**: ভিডিও থাম্বনেইল, সাইজ/রেজোলিউশন ট্যাগ এবং ডাউনলোড প্রগ্রেস ইন্ডিকেটর।
+- **৪-স্তরের সুপার-ফাস্ট ডিটেকশন**: ব্রাউজার নেটওয়ার্ক ইন্টারসেপশন, React Fiber ইন্সপেকশন এবং স্ক্রিপ্ট পার্সিং টেকনোলজি।
+- **১০০% নিরাপদ ও পলিসি সমর্থিত**: কোনো পাসওয়ার্ড বা পার্সোনাল ডাটা সংগ্রহ করে না। Manifest V3 সম্পূর্ণ নিরাপদ।
+
+---
+
+## 📥 ধাপ ১: GitHub থেকে কীভাবে ডাউনলোড করবেন
+
+১. ব্রাউজারে এই GitHub রিপোজিটরির মূল পেজে যান।  
+২. পেজের ওপরের ডান পাশে থাকা সবুজ রঙের **`<> Code`** বাটনে ক্লিক করুন।  
+৩. ড্রপডাউন মেনু থেকে একদম নিচে থাকা **`Download ZIP`** অপশনে ক্লিক করুন।  
+   > *(আপনার কম্পিউটারের Downloads ফোল্ডারে একটি `.zip` ফাইল ডাউনলোড হবে)*  
+৪. ডাউনলোড শেষ হলে ফাইলটির ওপর মাউসের রাইট ক্লিক (Right-Click) করে **`Extract All...`** (বা **Extract Here**) নির্বাচন করুন।  
+৫. আনজিপ করার পর যে ফোল্ডারটি পাবেন (যেমন: `FB Video Downloader`), সেটি মনে রাখুন বা ডেস্কটপ/যেকোনো ড্রাইভের নির্দিষ্ট ফোল্ডারে রাখুন।
+
+---
+
+## 💻 ধাপ ২: Google Chrome-এ কীভাবে যোগ (Add) করবেন
+
+১. আপনার কম্পিউটারে **Google Chrome** (অথবা Brave, Edge, Opera) ব্রাউজারটি ওপেন করুন।  
+২. ব্রাউজারের অ্যাড্রেস বারে (Address Bar) নিচের লেখাটি টাইপ করে কিবোর্ডের `Enter` চাপুন:
    ```text
    chrome://extensions/
    ```
-2. Enable **Developer mode** (top-right toggle switch).
-3. If you already loaded the extension earlier, click the **Reload (circular arrow 🔄)** icon on the **SOFT IT FB VIDEO DOWNLOADER** card.
-4. If loading for the first time, click **Load unpacked** and select:
-   ```text
-   E:\Extenstions\FB Video Downloader
-   ```
-5. Open or refresh [Facebook](https://www.facebook.com).
-6. **Play or scroll to any video**:
-   - The floating **Download** button appears on the video card.
-   - The extension badge counter in your Chrome toolbar updates instantly.
-   - Click the extension icon to view all detected videos and pick your preferred quality (HD/SD)!
+৩. পেজের উপরের ডান কোনায় থাকা **Developer mode** টগল সুইচটি অন (Enable) করে দিন।  
+৪. এখন উপরের বাঁ দিকে ৩টি নতুন বাটন দেখতে পাবেন। সেখান থেকে প্রথম বাটন **`Load unpacked`**-এ ক্লিক করুন।  
+৫. ফাইল সিলেক্ট করার উইন্ডো আসলে, ধাপ ১-এ আনজিপ করা **`FB Video Downloader`** ফোল্ডারটি সিলেক্ট করে **`Select Folder`** বাটনে ক্লিক করুন।  
+৬. **অভিনন্দন!** আপনার ব্রাউজারে **`SOFT IT FB VIDEO DOWNLOADER`** সফলভাবে ইন্সটল হয়ে যাবে।  
+৭. *টিপস:* এক্সটেনশনটি সবসময় সহজে ব্যবহারের জন্য ব্রাউজারের উপরে ডানদিকের ধাঁধার টুকরো মতো (🧩 Extensions) আইকনে ক্লিক করে **SOFT IT FB VIDEO DOWNLOADER**-এর পাশে থাকা **Pin (📌)** আইকনে ক্লিক করে দিন।
+
+---
+
+## 🎬 ধাপ ৩: ফেসবুক ভিডিও ডাউনলোড করার নিয়ম
+
+### পদ্ধতি ১: ভিডিওর ওপরে থাকা বাটন দিয়ে (In-Page Overlay)
+1. ব্রাউজারে [Facebook](https://www.facebook.com)-এ যান।
+2. আপনার ফিড, কোনো পেজ, রিলস (Reels) বা গ্রুপের যেকোনো ভিডিওতে স্ক্রল করুন অথবা ভিডিওটি **Play** করুন।
+3. ভিডিওর উপরের ডান কোনায় একটি সুন্দর ব্লু **`Download`** বাটন দেখতে পাবেন।
+4. বাটনটিতে ক্লিক করলে কোয়ালিটির তালিকা আসবে:
+   - **Full HD / HD Quality (1080p / 720p)**
+   - **Standard Definition (SD)**
+5. আপনার পছন্দের কোয়ালিটির পাশের ডাউনলোড আইকনে ক্লিক করলেই ভিডিও ডাউনলোড শুরু হয়ে যাবে।
+
+### পদ্ধতি ২: এক্সটেনশন পপআপ দিয়ে (Extension Toolbar)
+1. ফেসবুক পেজে থাকা অবস্থায় ব্রাউজার টুলবারে থাকা **SOFT IT FB VIDEO DOWNLOADER** আইকনে ক্লিক করুন।
+2. পপআপের **Videos** ট্যাবে স্ক্রিনে থাকা সব ভিডিও থাম্বনেইল ও টাইটেলসহ দেখতে পাবেন।
+3. পছন্দের ভিডিওটির নিচে **HD** অথবা **SD** পিল সিলেক্ট করে **`Download`** বাটনে ক্লিক করুন।
+4. চাইলে পাশের **Copy Link** আইকনে ক্লিক করে ভিডিওটির সরাসরি ডাউনলোড লিংক কপিও করতে পারেন।
+
+---
+
+## 🖼️ ধাপ ৪: ফেসবুক ফটো/ছবি ডাউনলোড করার নিয়ম
+
+1. ফেসবুকে যেকোনো পোস্টের ছবি বা ফটো অ্যালবামে যান।
+2. ছবির ওপর মাউসের কার্সর রাখলে (Hover করলে) ওপরের কোনায় **`Photo`** ডাউনলোড বাটন দেখতে পাবেন।
+3. বাটনে ক্লিক করলেই ফুল রেজোলিউশন ছবি মুহূর্তেই সেভ হয়ে যাবে।
+4. অথবা এক্সটেনশন পপআপ ওপেন করে ওপরের **`Photos`** ট্যাবে ক্লিক করুন।
+5. পেজে পাওয়া সব হাই-রেজোলিউশন ছবির ২-কলামের গ্রিড দেখতে পাবেন। প্রতিটি ছবির নিচে থাকা **`Download`** বাটনে ক্লিক করে ফুল রেজোলিউশন ছবি সেভ করতে পারেন।
+
+---
+
+## ⚡ ধাপ ৫: এক ক্লিকে সব ডাউনলোড (Download All)
+
+- যদি আপনি একই পেজের একাধিক ভিডিও একসাথে ডাউনলোড করতে চান:  
+  পপআপের নিচে থাকা **`Download All Videos`** বাটনে ক্লিক করুন। সব ভিডিও সর্বোচ্চ কোয়ালিটিতে এক এক করে ডাউনলোড কিউতে চলে যাবে।
+- যদি আপনি পেজের সব ছবি একসাথে নামাতে চান:  
+  পপআপের **Photos** ট্যাবে গিয়ে নিচে থাকা **`Download All Photos`** বাটনে ক্লিক করুন।
+
+---
+
+## 🔒 প্রাইভেট গ্রুপ ভিডিও ডাউনলোড ও নিরাপত্তা
+
+- **কোনো পাসওয়ার্ড বা লগইন তথ্য নেওয়া হয় না**: এক্সটেনশনটি কোনো ইউজারের ফেসবুক পাসওয়ার্ড, কুকিজ বা পার্সোনাল ডাটা কোথাও সেন্ড বা স্টোর করে না।
+- **প্রাইভেট গ্রুপ সাপোর্ট**: আপনি যে প্রাইভেট গ্রুপগুলোতে অলরেডি মেম্বার হিসেবে জয়েন আছেন এবং লগইন করা অবস্থায় ভিডিও দেখতে পারেন, সেই ভিডিওগুলো এক্সটেনশনটি স্বয়ংক্রিয়ভাবে ডিটেক্ট করতে পারে এবং আপনার ব্রাউজারের নিজস্ব অথরাইজড সেশন ব্যবহার করে নিরাপদে ডাউনলোড করে। কোনো প্রাইভেসি বাইপাস করার প্রয়োজন পড়ে না।
+
+---
+
+## ❓ সাধারণ সমস্যা ও সমাধান (FAQ / Troubleshooting)
+
+#### প্রশ্ন ১: "No Video Playing Yet" দেখাচ্ছে, ভিডিও ডিটেক্ট হচ্ছে না কেন?
+> **সমাধান:** আধুনিক ফেসবুকে ভিডিও চালু না হওয়া পর্যন্ত ব্রাউজারে ভিডিও স্ট্রিম লোড হয় না। আপনি ভিডিওটির ওপর **Play** বাটনে ক্লিক করে ১-২ সেকেন্ড প্লে করুন অথবা পপআপের **`Scan Page Now`** বাটনে ক্লিক করুন। সাথে সাথে লিংক চলে আসবে।
+
+#### প্রশ্ন ২: কোনো কোডে পরিবর্তন করলে কীভাবে রিলোড করবেন?
+> **সমাধান:** `chrome://extensions/`-এ গিয়ে **SOFT IT FB VIDEO DOWNLOADER** কার্ডের নিচে থাকা **Reload (🔄 রিফ্রেশ)** বাটনে ক্লিক করুন এবং ফেসবুক পেজটি একবার `Ctrl + F5` দিয়ে রিফ্রেশ করুন।
+
+#### প্রশ্ন ৩: ডাউনলোড করা ফাইল কোথায় জমা হবে?
+> **সমাধান:** আপনার কম্পিউটারের ডিফল্ট **Downloads** ফোল্ডারে ফাইলগুলো সেভ হবে।  
+> - ভিডিও ফাইলের নাম হবে: `SOFT_IT_FB_Video_[Title]_[Quality]_[ID].mp4`  
+> - ছবির ফাইলের নাম হবে: `SOFT_IT_FB_Image_[Title]_[ID].jpg`
+
+---
+
+## 🌐 English Guide Summary
+
+1. **Download from GitHub**: Click `<> Code` -> `Download ZIP`. Extract the ZIP folder.
+2. **Install in Chrome**: Go to `chrome://extensions/`, enable **Developer mode**, click **Load unpacked**, and select the extracted folder.
+3. **Usage**:
+   - Open [Facebook](https://www.facebook.com).
+   - Play any video to see the floating **Download** button with **Full HD (1080p)**, **HD (720p)**, and **SD** options.
+   - Hover over photos to see the **Photo** download button.
+   - Click the extension toolbar icon to switch between **Videos** and **Photos** tabs, or use **Download All**.
+
+---
+
+### Developed by SOFT IT
+Enjoy fast, seamless Facebook video & image downloads in pristine HD quality!
