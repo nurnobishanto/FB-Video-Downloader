@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOFT IT FB VIDEO DOWNLOADER</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="logo-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>SOFT IT FB VIDEO DOWNLOADER</h1>
+          <span class="version-tag">HD &bull; Full HD &bull; SD</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="refreshBtn" class="icon-btn" title="Rescan Videos">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M23 4v6h-6"></path>
+            <path d="M1 20v-6h6"></path>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+          </svg>
+        </button>
+        <button id="settingsToggleBtn" class="icon-btn" title="Settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Collapsible Settings Panel -->
+    <div id="settingsPanel" class="settings-panel hidden">
+      <div class="setting-item">
+        <label for="toggleOverlay">Show Floating Download button on video players</label>
+        <input type="checkbox" id="toggleOverlay" checked>
+      </div>
+      <div class="setting-item">
+        <label for="selectDefaultQuality">Default preferred quality</label>
+        <select id="selectDefaultQuality">
+          <option value="HD">Highest Available (HD / 1080p)</option>
+          <option value="SD">Standard Definition (SD)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Active Status Bar -->
+    <div class="status-bar">
+      <span id="detectedCountText">Scanning page...</span>
+      <span id="pageContextBadge" class="context-badge">Facebook</span>
+    </div>
+
+    <!-- Main Content Area -->
+    <main id="contentArea">
+      <!-- Non-Facebook Tab State -->
+      <div id="nonFbState" class="state-container hidden">
+        <div class="state-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <h3>Facebook Tab Required</h3>
+        <p>Please open Facebook to detect videos from Pages, profiles, Reels, and groups.</p>
+        <button id="openFbBtn" class="primary-action-btn">
+          Open Facebook
+        </button>
+      </div>
+
+      <!-- Zero Videos Detected State -->
+      <div id="emptyState" class="state-container hidden">
+        <div class="state-icon pulse">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
+            <line x1="7" y1="2" x2="7" y2="22"></line>
+            <line x1="17" y1="2" x2="17" y2="22"></line>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <line x1="2" y1="7" x2="7" y2="7"></line>
+            <line x1="2" y1="17" x2="7" y2="17"></line>
+            <line x1="17" y1="17" x2="22" y2="17"></line>
+            <line x1="17" y1="7" x2="22" y2="7"></line>
+          </svg>
+        </div>
+        <h3>No Video Playing Yet</h3>
+        <p>Scroll down or click <strong>Play</strong> on any video on your screen to capture the HD download link.</p>
+        <div class="tips-box">
+          <div class="tip-row">
+            <span class="tip-bullet">&bull;</span>
+            <span>Supports Pages, Profiles, Reels &amp; Groups</span>
+          </div>
+          <div class="tip-row">
+            <span class="tip-bullet">&bull;</span>
+            <span>Private groups supported while logged in</span>
+          </div>
+        </div>
+        <button id="scanNowBtn" class="secondary-action-btn">
+          Scan Page Now
+        </button>
+      </div>
+
+      <!-- Video Cards List -->
+      <div id="videoList" class="video-list">
+        <!-- Rendered dynamically -->
+      </div>
+    </main>
+
+    <!-- Bottom Action Bar -->
+    <footer id="appFooter" class="app-footer hidden">
+      <button id="downloadAllBtn" class="download-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        Download All (Highest Quality)
+      </button>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

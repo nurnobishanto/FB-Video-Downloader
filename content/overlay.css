@@ -1,0 +1,239 @@
+/**
+ * FB Video Downloader - In-Page Overlay Styles
+ */
+
+.fb-downloader-overlay-wrapper {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2147483640; /* High z-index to stay above video controls */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  user-select: none;
+  pointer-events: auto;
+}
+
+/* Main Download Button */
+.fb-downloader-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(24, 119, 242, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+}
+
+.fb-downloader-btn:hover {
+  background: #1877F2;
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 6px 18px rgba(24, 119, 242, 0.45);
+}
+
+.fb-downloader-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.fb-dl-icon {
+  width: 15px;
+  height: 15px;
+}
+
+.fb-dl-arrow {
+  width: 12px;
+  height: 12px;
+  opacity: 0.85;
+  transition: transform 0.2s ease;
+}
+
+.fb-downloader-dropdown.fb-dl-show ~ .fb-downloader-btn .fb-dl-arrow {
+  transform: rotate(180deg);
+}
+
+/* Quality Dropdown Menu */
+.fb-downloader-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 270px;
+  background: rgba(26, 29, 36, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+  padding: 10px;
+  animation: fbDlFadeIn 0.18s ease-out forwards;
+  color: #f1f5f9;
+}
+
+.fb-downloader-dropdown.fb-dl-show {
+  display: block;
+}
+
+@keyframes fbDlFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fb-dl-dropdown-header {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #94a3b8;
+  margin-bottom: 8px;
+  padding: 0 4px 4px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.fb-dl-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.fb-dl-options-list::-webkit-scrollbar {
+  width: 4px;
+}
+.fb-dl-options-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+/* Option Item */
+.fb-dl-option-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.fb-dl-option-item:hover {
+  background: rgba(24, 119, 242, 0.18);
+  border-color: rgba(24, 119, 242, 0.4);
+}
+
+.fb-dl-opt-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.fb-dl-opt-tag {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.fb-dl-tag-hd {
+  background: linear-gradient(135deg, #1877F2, #00C6FF);
+  color: #ffffff;
+}
+
+.fb-dl-tag-sd {
+  background: #475569;
+  color: #e2e8f0;
+}
+
+.fb-dl-opt-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #f8fafc;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fb-dl-opt-badge {
+  font-size: 9px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+  padding: 1px 5px;
+  border-radius: 10px;
+}
+
+/* Option Download Button */
+.fb-dl-opt-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  border-radius: 6px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.fb-dl-opt-btn:hover {
+  background: #1877F2;
+  transform: scale(1.05);
+}
+
+.fb-dl-opt-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Spinner */
+.fb-dl-spinner {
+  animation: fbDlSpin 1s linear infinite;
+}
+
+@keyframes fbDlSpin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.fb-dl-loading,
+.fb-dl-empty {
+  padding: 12px 8px;
+  text-align: center;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.fb-dl-empty p {
+  margin: 0 0 4px 0;
+  font-weight: 600;
+  color: #cbd5e1;
+}
+
+.fb-dl-empty small {
+  display: block;
+  font-size: 11px;
+  color: #64748b;
+}
